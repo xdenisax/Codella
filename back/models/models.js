@@ -84,7 +84,7 @@ Keyword.init({
 },{ sequelize, modelName: 'keywords'});
     
 
-Note.belongsTo();
+Note.belongsTo(User);
 User.hasMany(Note);
 UserGroup.belongsTo(User);
 UserGroup.belongsTo(Group);
