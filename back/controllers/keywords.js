@@ -37,6 +37,15 @@ const getAllKeywordsForANote = async(req, res) => {
 }
 
 //POST /keywords/note_id -> adaugare cuvant cheie la notita
-
+const addKeywordToNote = (req,res) => {
+    const keyword = req.body; 
+    if(keyword.id && keyword.word){
+        const result = await Models.Keywords.create(keyword);
+        res.status(201).send({message:"Keyword added successfully."});
+    }
+    else{
+        res.status(400).send({message:"Invalid payload"});
+    }
+}
 
 
