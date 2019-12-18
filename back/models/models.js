@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const mysql = require('mysql2/promise');
 
 const DB_USERNAME = 'root'
-const DB_PASSWORD = 'p@ss'
+const DB_PASSWORD = ''
 
 mysql.createConnection({
 	user : DB_USERNAME,
@@ -54,7 +54,11 @@ User.init({
 
 
 Group.init({
-    groupID: Sequelize.INTEGER,
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement:true
+    },
     name: Sequelize.STRING
 },{
     sequelize, modelName: 'groups'
@@ -62,14 +66,18 @@ Group.init({
 
     
 UserGroup.init({
-    userGroupID : Sequelize.INTEGER
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement:true
+    }
 },{
     sequelize, modelName: 'userGroups'
 });
 
 
 Note.init({
-    id_note: { type: Sequelize.INTEGER, primaryKey: true },
+    id: { type: Sequelize.INTEGER, primaryKey: true },
     title : Sequelize.STRING,
     content: Sequelize.TEXT,
     subject: Sequelize.STRING,
@@ -84,13 +92,27 @@ Keyword.init({
 },{ sequelize, modelName: 'keywords'});
     
 
-Note.belongsTo(User);
-User.hasMany(Note);
 UserGroup.belongsTo(User);
 UserGroup.belongsTo(Group);
 User.hasMany(UserGroup);
 Group.hasMany(UserGroup);
+Note.belongsTo(User);
+User.hasMany(Note);
 Keyword.belongsTo(Note);
 Note.hasMany(Keyword);
 
 
+User.sync()
+Group.sync()
+UserGroup.sync()
+Note.sync()
+Keyword.sync()
+
+module.exports = {
+    sequelize, 
+    User,
+    UserGroup,
+    Group,
+    Note,
+    Keyword
+}
