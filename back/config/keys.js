@@ -1,8 +1,8 @@
 //Google auth variable
 const googleAuth = {
   clientID:
-    "1017009752887-iilpjrroch9o6ja84c49ti1rlnr10hml.apps.googleusercontent.com",
-  clientSecret: "qgtmuNBUypde494ShAoMNm62"
+    "787837622576-fd7kt6fkj0u8g6dc4rjc942seud9otqs.apps.googleusercontent.com",
+  clientSecret: "XBGVOMRIt2DzRilOUbQ5E2LB"
 };
 
 const session = {
