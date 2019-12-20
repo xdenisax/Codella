@@ -5,6 +5,7 @@ const authRouter = require("./auth-routes");
 const notesRouter = require("./notes");
 const keywordsRouter = require("./keywords");
 const groupsRouter = require("./groups");
+const userRouter = require("./users");
 
 const { isUserAuthenticated } = require("../controllers/middlewares");
 //routes for auth
@@ -12,6 +13,7 @@ router.use("/auth", authRouter);
 router.use("/", notesRouter);
 router.use("/", keywordsRouter);
 router.use("/", groupsRouter);
+router.use("/", userRouter);
 // Logout route
 router.get("/logout", (req, res) => {
   req.logout();
