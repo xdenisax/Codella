@@ -26,16 +26,18 @@ const createGroup = async (req, res) => {
 
 //stergerea unei grupe
 const deleteGroup = async (req, res) => {
-  let idGroup = req.params.id;
+  let idGroup = req.params.groupId;
 
-  Group.destroy({
+  Group.findOne({
     where: {
       id: idGroup
     }
   }).then(result => {
     if (result) {
-      res.status(200).send({
+       result.destroy();
+        res.status(200).send({
         message: "Group deleted!"
+        
       });
     } else
       res.status(404).send({
@@ -51,12 +53,11 @@ const selectAllGroupsForUser = async (req, res) => {
     include: [
       {
         model: UserGroup,
-        where: { groupId: this.groupId, id: userId }
+        where: { userId: userId }
       }
     ]
   }).then(result => {
     if (result.length > 0) {
-      console.log(result);
       res.status(200).json(result);
     } else res.status(404).json({ message: "not found" });
   });
@@ -65,17 +66,16 @@ const selectAllGroupsForUser = async (req, res) => {
 //selecteaza toti userii unui grup
 const selectAllUsersForAGroup = async (req, res) => {
   let group_ID = req.params.groupId;
-
+ 
   User.findAll({
-    inculude: [
+    include: [
       {
         model: UserGroup,
-        where: { id: this.id, groupId: group_ID }
+        where: { groupId: group_ID }
       }
     ]
   }).then(result => {
     if (result.length > 0) {
-      console.log(result);
       res.status(200).json(result);
     } else res.status(404).json({ message: "not found" });
   });
@@ -87,11 +87,14 @@ const addUserToAGroup = async (req, res) => {
   let group_ID = req.params.groupId;
   let userId = req.params.user_id;
 
-  Group.findOne({ where: { groupId: group_ID } }).then(result => {
+  Group.findOne({ where: { Id: group_ID } }).then(result => {
     if (result) {
       User.findOne({ where: { id: userId } }).then(result => {
         if (result) {
-          result.save();
+          const ug = new UserGroup();
+          ug.userId = userId;
+          ug.groupId = group_ID;
+          ug.save();
           res.status(201).json({ message: "User added" });
         } else res.status(404).json({ message: "User not found" });
       });
@@ -105,17 +108,14 @@ const deleteUserFromAGroup = async (req, res) => {
   let group_ID = req.params.groupId;
   let userId = req.params.user_id;
 
-  Group.findOne({ where: { groupId: group_ID } }).then(result => {
+  UserGroup.findOne({ where: { groupId: group_ID, userId:userId } }).then(result => {
     if (result) {
-      User.findOne({ where: { id: userId } }).then(result => {
-        if (result) {
           result.destroy();
           res.status(201).json({ message: "User deleted" });
-        } else res.status(404).json({ message: "User not found" });
+        } else res.status(404).json({ message: "User Group not found" });
       });
-    } else res.status(404).json({ message: "Group not found" });
-  });
-};
+  };
+
 
 module.exports = {
   createGroup,

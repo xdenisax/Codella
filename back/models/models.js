@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const mysql = require("mysql2/promise");
 
 const DB_USERNAME = "root";
-const DB_PASSWORD = "";
+const DB_PASSWORD = "p@ss";
 
 mysql
   .createConnection({
