@@ -15,8 +15,10 @@ const keys = require("./config/keys");
 const passport = require("passport");
 const app = express();
 const indexRouter = require("./routes/index");
+const bodyParser = require("body-parser");
 
 app.use(express.static(path.join(__dirname, "../front")));
+app.use(bodyParser.json());
 
 //encrypt the cookie and make it a day long
 app.use(
@@ -32,6 +34,6 @@ app.use(passport.session());
 //set up routes
 app.use("/", indexRouter);
 
-app.listen(8080, () => {
-  console.log("Server started on port 8080...");
+app.listen(3000, () => {
+  console.log("Server started on port 3000...");
 });
