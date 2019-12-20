@@ -29,6 +29,7 @@ class Group extends Sequelize.Model {}
 class UserGroup extends Sequelize.Model {}
 class Note extends Sequelize.Model {}
 class Keyword extends Sequelize.Model {}
+class GroupNote extends Sequelize.Model {}
 
 User.init(
   {
@@ -102,6 +103,17 @@ Keyword.init(
   { sequelize, modelName: "keywords" }
 );
 
+GroupNote.init(
+  {id:{ type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }},
+  {sequelize, modelName:"groupNotes"}
+  );
+  
+
+GroupNote.belongsTo(Group);
+GroupNote.belongsTo(Note);
+Note.hasMany(GroupNote);
+Group.hasMany(GroupNote);
+
 UserGroup.belongsTo(User);
 UserGroup.belongsTo(Group);
 User.hasMany(UserGroup);
@@ -116,6 +128,7 @@ Group.sync();
 UserGroup.sync();
 Note.sync();
 Keyword.sync();
+GroupNote.sync();
 
 module.exports = {
   sequelize,
@@ -123,5 +136,6 @@ module.exports = {
   UserGroup,
   Group,
   Note,
-  Keyword
+  Keyword,
+  GroupNote
 };
