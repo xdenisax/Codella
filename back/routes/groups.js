@@ -18,10 +18,10 @@ const {
 } = require("../controllers/groups");
 
 router.get("/groups/:user_id", selectAllGroupsForUser);
-router.get("/groups/:groupId", selectAllUsersForAGroup);
+router.get("/group/:groupId", selectAllUsersForAGroup);
 router.post("/groups/:groupId/:user_id", addUserToAGroup);
 router.delete("/groups/:groupId/:user_id", deleteUserFromAGroup);
 router.post("/groups", createGroup);
-router.delete("/group/:groupId", deleteGroup);
+router.delete("/groups/:groupId", deleteGroup);
 
 module.exports = router;
