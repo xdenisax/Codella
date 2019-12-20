@@ -2,12 +2,19 @@
 GET /keywords/note_id -> afisare toate cuvintele cheie pt o notita
 POST /keywords/note_id -> adaugare cuvant cheie la notita*/
 
-const { Models } = require("./../models/models");
+const {
+  sequelize,
+  User,
+  UserGroup,
+  Group,
+  Note,
+  Keyword
+} = require("../models/models");
 
 //GET /keywords -> afisare toate cuvintele cheie
 const getAllKeywords = async (req, res) => {
   try {
-    const keywords = await Models.Keywords.findAll();
+    const keywords = await Keyword.findAll();
     res.status(200).send(keywords);
   } catch (err) {
     res
@@ -23,7 +30,7 @@ const getAllKeywordsForANote = async (req, res) => {
     const note_id = req.params.note_id;
     if (note_id) {
       try {
-        const keywords = await Models.Keywords.findAll({
+        const keywords = await Keyword.findAll({
           where: { id: note_id }
         });
         res.status(200).send(keywords);
@@ -44,10 +51,10 @@ const getAllKeywordsForANote = async (req, res) => {
 const addKeywordToNote = async (req, res) => {
   try {
     const note_id = req.params.note_id;
-    Models.Note.findOne({ where: { id: note_id } }).then(result => {
+    Note.findOne({ where: { id: note_id } }).then(result => {
       if (result) {
-        const keyword = new Models.Keywords(req.body);
-        keyword.id_note = note_id;
+        const keyword = new Keyword(req.body);
+        keyword.noteId = note_id;
         keyword.save();
         res.status(201).send({ message: "Keyword added successfully." });
       } else {

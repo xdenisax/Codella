@@ -3,13 +3,19 @@ GET /notes/:id -> afisare o notita
 PUT /notes/:id -> update notita
 DELETE /notes/:id -> stergere notita
 POST /notes/:id -> adauga o notita*/
-
-const { Models } = require("./../models/models");
+const {
+  sequelize,
+  User,
+  UserGroup,
+  Group,
+  Note,
+  Keyword
+} = require("../models/models");
 
 ///*GET /notes -> listare toate notite
 const getNotes = async (req, res) => {
   try {
-    const notes = await Models.Note.findAll();
+    const notes = await Note.findAll();
     res.status(200).send(notes);
   } catch (e) {
     res
@@ -22,7 +28,7 @@ const getNotes = async (req, res) => {
 const getNote = async (req, res) => {
   const note_id = req.params.id;
   try {
-    const note = await Models.Note.findOne({ where: { id: note_id } });
+    const note = await Note.findOne({ where: { id: note_id } });
     res.status(200).send(note);
   } catch (e) {
     res
@@ -35,7 +41,7 @@ const getNote = async (req, res) => {
 const updateNote = async (req, res) => {
   try {
     const note_id = req.params.id;
-    Models.Note.findOne({ where: { id: note_id } }).then(result => {
+    Note.findOne({ where: { id: note_id } }).then(result => {
       if (result) {
         result.update({ content: req.body.note.content });
         res.status(200).send({ message: "Note updated." });
@@ -55,7 +61,7 @@ const deleteNote = async (req, res) => {
   try {
     const note_id = req.params.id;
     try {
-      Models.Note.distroy({ where: { id: note_id } });
+      Note.distroy({ where: { id: note_id } });
     } catch (e) {
       res.status(500).send({ message: "Server error." });
     }
@@ -71,10 +77,10 @@ const deleteNote = async (req, res) => {
 const saveNote = async (req, res) => {
   try {
     const user_id = req.params.id;
-    Models.User.findOne({ where: { id: user_id } }).then(result => {
+    User.findOne({ where: { id: req.params.id } }).then(result => {
       if (result) {
-        const note = new Models.Note(req.body);
-        note.user_id = user_id;
+        const note = new Note(req.body);
+        note.userId = user_id;
         note.save();
         res.status(200).send("Note created");
       } else {

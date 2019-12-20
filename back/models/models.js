@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const mysql = require("mysql2/promise");
 
 const DB_USERNAME = "root";
-const DB_PASSWORD = "";
+const DB_PASSWORD = "p@ss";
 
 mysql
   .createConnection({
@@ -84,7 +84,7 @@ UserGroup.init(
 
 Note.init(
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
+    id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     title: Sequelize.STRING,
     content: Sequelize.TEXT,
     subject: Sequelize.STRING,
@@ -96,7 +96,7 @@ Note.init(
 
 Keyword.init(
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
+    id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     word: Sequelize.STRING
   },
   { sequelize, modelName: "keywords" }
