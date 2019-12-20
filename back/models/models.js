@@ -84,7 +84,7 @@ UserGroup.init(
 
 Note.init(
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
+    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     title: Sequelize.STRING,
     content: Sequelize.TEXT,
     subject: Sequelize.STRING,
