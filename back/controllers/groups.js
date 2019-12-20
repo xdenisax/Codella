@@ -8,7 +8,8 @@
 const Group = require("../models/models").Group;
 const UserGroup = require("../models/models").UserGroup;
 const User = require("../models/models").User;
-
+const GroupNote= require("../models/models").GroupNote;
+const Note =  require("../models/models").Note;
 //crearea unei grupe
 const createGroup = async (req, res) => {
   const group = new Group(req.body);
@@ -116,8 +117,50 @@ const deleteUserFromAGroup = async (req, res) => {
       });
   };
 
+//post /groups/:groupId/:noteId Adauga o notita la un grup
+const addNoteToGroup= async(req, res)=>{
+  let group_ID = req.params.groupId;
+  let noteId = req.params.noteId;
+  
+  Group.findOne({ where: { id: group_ID } }).then(result => {
+    if (result) {
+      Note.findOne({ where: { id: noteId } }).then(result => {
+        if (result) {
+          let groupNote = new GroupNote();
+          groupNote.groupId = group_ID;
+          groupNote.noteId = noteId;
+          groupNote.save();
+          res.status(200).json({message:`Note ${noteId} added to group ${group_ID}`});
+        }else res.status(404).json({ message: "Note not found" });
+      });
+    }else res.status(404).json({ message: "Group not found" });
+  });
+};
+
+
+// get /groups/notes/:groupId Afiseaza toate notitele unei grupe
+const getNotesForGroup = async(req,res)=>{
+  let group_ID = req.params.groupId;
+ 
+  Note.findAll({
+    include: [
+      {
+        model: GroupNote,
+        where: { groupId: group_ID }
+      }
+    ]
+  }).then(result => {
+    if (result.length > 0) {
+      res.status(200).json(result);
+    } else res.status(404).json({ message: "not found" });
+  });
+}
+
+
 
 module.exports = {
+  addNoteToGroup,
+  getNotesForGroup,
   createGroup,
   deleteGroup,
   selectAllUsersForAGroup,
