@@ -1,15 +1,17 @@
-// GET /groups/:user_id(ct) -> listeaza toate grupurile pt un utilizator //done
-// GET /groups/:groupId-> listeaza toti utilizatorii dintr-un grup //done
-// POST /groups/:groupId/:user_id-> adauga un utilizator la un grup //done
+// GET /groups/:user_id(ct) -> listeaza toate grupurile pt un utilizator
+// GET /groups/:groupId-> listeaza toti utilizatorii dintr-un grup
+// POST /groups/:groupId/:user_id-> adauga un utilizator la un grup
 // DELETE /groups/:groupId/:user_id -> sterge un utilizator dintr-un grup
-// POST /groups -> creare grup    //facut
-// DELETE /group/:groupId -> stergere grup //facut
+// POST /groups -> creare grup
+// DELETE /group/:groupId -> stergere grup
+// POST /groups/:groupId/:noteId -> adauga (partajeaza) o notita la un grup
+// GET /groups/notes/:groupId -> listeaza toate notitele ce apartin de un grup
 
 const Group = require("../models/models").Group;
 const UserGroup = require("../models/models").UserGroup;
 const User = require("../models/models").User;
-const GroupNote= require("../models/models").GroupNote;
-const Note =  require("../models/models").Note;
+const GroupNote = require("../models/models").GroupNote;
+const Note = require("../models/models").Note;
 //crearea unei grupe
 const createGroup = async (req, res) => {
   const group = new Group(req.body);
@@ -35,10 +37,9 @@ const deleteGroup = async (req, res) => {
     }
   }).then(result => {
     if (result) {
-       result.destroy();
-        res.status(200).send({
+      result.destroy();
+      res.status(200).send({
         message: "Group deleted!"
-        
       });
     } else
       res.status(404).send({
@@ -67,7 +68,7 @@ const selectAllGroupsForUser = async (req, res) => {
 //selecteaza toti userii unui grup
 const selectAllUsersForAGroup = async (req, res) => {
   let group_ID = req.params.groupId;
- 
+
   User.findAll({
     include: [
       {
@@ -109,19 +110,21 @@ const deleteUserFromAGroup = async (req, res) => {
   let group_ID = req.params.groupId;
   let userId = req.params.user_id;
 
-  UserGroup.findOne({ where: { groupId: group_ID, userId:userId } }).then(result => {
-    if (result) {
-          result.destroy();
-          res.status(201).json({ message: "User deleted" });
-        } else res.status(404).json({ message: "User Group not found" });
-      });
-  };
+  UserGroup.findOne({ where: { groupId: group_ID, userId: userId } }).then(
+    result => {
+      if (result) {
+        result.destroy();
+        res.status(201).json({ message: "User deleted" });
+      } else res.status(404).json({ message: "User Group not found" });
+    }
+  );
+};
 
 //post /groups/:groupId/:noteId Adauga o notita la un grup
-const addNoteToGroup= async(req, res)=>{
+const addNoteToGroup = async (req, res) => {
   let group_ID = req.params.groupId;
   let noteId = req.params.noteId;
-  
+
   Group.findOne({ where: { id: group_ID } }).then(result => {
     if (result) {
       Note.findOne({ where: { id: noteId } }).then(result => {
@@ -130,18 +133,19 @@ const addNoteToGroup= async(req, res)=>{
           groupNote.groupId = group_ID;
           groupNote.noteId = noteId;
           groupNote.save();
-          res.status(200).json({message:`Note ${noteId} added to group ${group_ID}`});
-        }else res.status(404).json({ message: "Note not found" });
+          res
+            .status(200)
+            .json({ message: `Note ${noteId} added to group ${group_ID}` });
+        } else res.status(404).json({ message: "Note not found" });
       });
-    }else res.status(404).json({ message: "Group not found" });
+    } else res.status(404).json({ message: "Group not found" });
   });
 };
 
-
 // get /groups/notes/:groupId Afiseaza toate notitele unei grupe
-const getNotesForGroup = async(req,res)=>{
+const getNotesForGroup = async (req, res) => {
   let group_ID = req.params.groupId;
- 
+
   Note.findAll({
     include: [
       {
@@ -154,9 +158,7 @@ const getNotesForGroup = async(req,res)=>{
       res.status(200).json(result);
     } else res.status(404).json({ message: "not found" });
   });
-}
-
-
+};
 
 module.exports = {
   addNoteToGroup,

@@ -85,15 +85,7 @@ UserGroup.init(
 
 Note.init(
   {
-<<<<<<< HEAD
-<<<<<<< HEAD
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-=======
-    id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
->>>>>>> tested keywords routes
-=======
-    id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
->>>>>>> 32c5b267bee29736af01216aaef876d75e18025f
     title: Sequelize.STRING,
     content: Sequelize.TEXT,
     subject: Sequelize.STRING,
@@ -112,10 +104,9 @@ Keyword.init(
 );
 
 GroupNote.init(
-  {id:{ type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }},
-  {sequelize, modelName:"groupNotes"}
-  );
-  
+  { id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true } },
+  { sequelize, modelName: "groupNotes" }
+);
 
 GroupNote.belongsTo(Group);
 GroupNote.belongsTo(Note);
@@ -131,12 +122,9 @@ User.hasMany(Note);
 Keyword.belongsTo(Note);
 Note.hasMany(Keyword);
 
-User.sync();
-Group.sync();
-UserGroup.sync();
-Note.sync();
-Keyword.sync();
-GroupNote.sync();
+sequelize.sync().then(() => {
+  console.log("Database & tables OK!");
+});
 
 module.exports = {
   sequelize,

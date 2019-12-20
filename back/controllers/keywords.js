@@ -31,7 +31,7 @@ const getAllKeywordsForANote = async (req, res) => {
     if (note_id) {
       try {
         const keywords = await Keyword.findAll({
-          where: { id: note_id }
+          where: { noteId: note_id }
         });
         res.status(200).send(keywords);
       } catch (err) {

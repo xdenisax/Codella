@@ -1,26 +1,30 @@
-/*GET /notes -> listare toate notite
+/*GET /notes -> listare toate notitele pentru un utilizator
 GET /notes/:id -> afisare o notita
 PUT /notes/:id -> update notita
 DELETE /notes/:id -> stergere notita
 POST /notes/:id -> adauga o notita*/
-const {
-  sequelize,
-  User,
-  UserGroup,
-  Group,
-  Note,
-  Keyword
-} = require("../models/models");
+const { User, Note } = require("../models/models");
 
-///*GET /notes -> listare toate notite
-const getNotes = async (req, res) => {
+///*GET /notes/:userId -> listare toate notite pentru un utilizator
+const getNotesForUser = async (req, res) => {
   try {
-    const notes = await Note.findAll();
-    res.status(200).send(notes);
-  } catch (e) {
-    res
-      .status(400)
-      .send({ message: "Bad request: server unable to process the request" });
+    const userId = req.params.userId;
+    if (userId) {
+      try {
+        const notes = await Note.findAll({
+          where: { userId: userId }
+        });
+        res.status(200).send(notes);
+      } catch (err) {
+        res.status(500).send(err);
+      }
+    } else {
+      res
+        .status(400)
+        .send({ message: "Bad request: server unable to process the request" });
+    }
+  } catch (err) {
+    res.status(500).send(err);
   }
 };
 
@@ -43,7 +47,7 @@ const updateNote = async (req, res) => {
     const note_id = req.params.id;
     Note.findOne({ where: { id: note_id } }).then(result => {
       if (result) {
-        result.update({ content: req.body.note.content });
+        result.update({ content: req.body.content });
         res.status(200).send({ message: "Note updated." });
       } else {
         res.status(404).send({ message: "Not found." });
@@ -58,26 +62,34 @@ const updateNote = async (req, res) => {
 
 //DELETE /notes/:id -> stergere notita
 const deleteNote = async (req, res) => {
+  const note_id = req.params.id;
   try {
-    const note_id = req.params.id;
-    try {
-      Note.distroy({ where: { id: note_id } });
-    } catch (e) {
-      res.status(500).send({ message: "Server error." });
-    }
+    Note.findOne({
+      where: {
+        id: note_id
+      }
+    }).then(result => {
+      if (result) {
+        result.destroy();
+        res.status(200).send({
+          message: "Note deleted"
+        });
+      } else
+        res.status(404).send({
+          message: "Could not find note"
+        });
+    });
   } catch (e) {
-    res
-      .status(400)
-      .send({ message: "Bad request: server unable to process the request" });
+    res.status(500).send({ message: "Server error." });
   }
 };
 
-//POST /notes/:id -> adauga o notita*/
+//POST /notes/:userId -> adauga o notita*/
 
 const saveNote = async (req, res) => {
   try {
-    const user_id = req.params.id;
-    User.findOne({ where: { id: req.params.id } }).then(result => {
+    const user_id = req.params.userId;
+    User.findOne({ where: { id: req.params.userId } }).then(result => {
       if (result) {
         const note = new Note(req.body);
         note.userId = user_id;
@@ -96,7 +108,7 @@ const saveNote = async (req, res) => {
 
 module.exports = {
   getNote,
-  getNotes,
+  getNotesForUser,
   updateNote,
   deleteNote,
   saveNote

@@ -1,4 +1,4 @@
-//Google auth variable
+//variabile pentru googleAuth & cookie session
 const googleAuth = {
   clientID:
     "787837622576-fd7kt6fkj0u8g6dc4rjc942seud9otqs.apps.googleusercontent.com",

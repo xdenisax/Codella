@@ -1,5 +1,6 @@
 const User = require("../models/models").User;
 
+//stergerea unui utilizator
 const deleteUser = async (req, res) => {
   const user_id = req.params.id;
   try {
@@ -23,4 +24,19 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { deleteUser };
+//crearea unui utilizator
+const createUser = async (req, res) => {
+  const user = new User(req.body);
+  if (user.email) {
+    await user.save();
+    res.status(201).send({
+      message: "User created!"
+    });
+  } else {
+    res.status(400).send({
+      message: "Invalid user payload"
+    });
+  }
+};
+
+module.exports = { deleteUser, createUser };

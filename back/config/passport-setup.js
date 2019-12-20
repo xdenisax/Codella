@@ -5,7 +5,7 @@ const googleCredentials = require("./keys").googleAuth;
 const User = require("../models/models").User;
 const { findUserById } = require("../services/index");
 passport.serializeUser((user, done) => {
-  //null for error, else stores the id into a cookie
+  //null pentru eroare, altfel stocheaza id-ul utilizatorului curent intr-un cookie
   done(null, user.id);
 });
 
@@ -22,18 +22,18 @@ passport.use(
       clientSecret: googleCredentials.clientSecret,
       callbackURL: "/auth/google/callback"
     },
-    //callback function for google auth
-    //fires when google receives the key from the callback route
+    //functie callback pentru autentificarea cu google
+    //este apelata atunci cand google primeste cheia de la ruta de callback
     (accessToken, refreshToken, profile, done) => {
-      //checks if the user already exists
+      //verifica daca userul exista deja
       User.findOne({
         where: { email: profile.emails[0].value }
       }).then(currentUser => {
         if (currentUser) {
-          //user already in db
+          //userul e deja in baza de date
           done(null, currentUser);
         } else {
-          //create user
+          //daca nu, creeaza utilizator
           let user = new User({
             familyname: profile.name.familyName,
             firstname: profile.name.givenName,

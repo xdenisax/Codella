@@ -19,8 +19,8 @@ const {
   addUserToAGroup
 } = require("../controllers/groups");
 
-router.get("/groups/:groupId/:noteId", getNotesForGroup);
-router.post("/groups/:groupId/:noteId", addNoteToGroup);
+router.get("/groups/notes/:groupId", getNotesForGroup);
+router.post("/groups/notes/:groupId/:noteId", addNoteToGroup);
 router.get("/groups/:user_id", selectAllGroupsForUser);
 router.get("/group/:groupId", selectAllUsersForAGroup);
 router.post("/groups/:groupId/:user_id", addUserToAGroup);
