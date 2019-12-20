@@ -12,7 +12,7 @@ router.get(
 //callback pentru autentificarea cu google
 router.get("/google/callback", passport.authenticate("google"), (req, res) => {
   //res.send(req.user);
-  res.sendStatus(200);
+  res.redirect("/dashboard");
 });
 
 module.exports = router;

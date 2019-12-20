@@ -21,7 +21,7 @@ router.get("/logout", (req, res) => {
 });
 //dashboard for user
 router.get("/dashboard", isUserAuthenticated, (req, res) => {
-  res.send("Logged in, Dashboard " + req.user.firstname);
+  res.send("Logged in, Dashboard for " + req.user.firstname);
 });
 
 module.exports = router;
