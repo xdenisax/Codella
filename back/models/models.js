@@ -84,7 +84,11 @@ UserGroup.init(
 
 Note.init(
   {
+<<<<<<< HEAD
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+=======
+    id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
+>>>>>>> tested keywords routes
     title: Sequelize.STRING,
     content: Sequelize.TEXT,
     subject: Sequelize.STRING,
@@ -96,7 +100,7 @@ Note.init(
 
 Keyword.init(
   {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
+    id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     word: Sequelize.STRING
   },
   { sequelize, modelName: "keywords" }
