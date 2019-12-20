@@ -11,11 +11,11 @@
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/17b9f52f9a8526054066)
 
 # API Rest
- **USERS:**
-  - **POST /users** – adaugă un utilizator -> folosit doar în testarea prin intermediul Postman deoarece în aplicație se va realiza la Google Auth (pentru testarea Google Auth se va deschide din instanța C9 proiectul prin funcționalitatea Share, iar în continuarea adresei ip va fi adăugat sufixul **.xip.io** -> serviciu gratuit de wildcard DNS pentru testare deoarece Google nu acceptă DNS-ul de la AWS)
-  - **DELETE /users/:id** -> șterge contul unui utilizator
- 
- **GROUPS:**
+  *  **USERS:**
+     *  **POST /users** – adaugă un utilizator -> folosit doar în testarea prin intermediul Postman deoarece în aplicație se va realiza la Google Auth (pentru testarea Google Auth se va deschide din instanța C9 proiectul prin funcționalitatea Share, iar în continuarea adresei ip va fi adăugat sufixul **.xip.io** -> serviciu gratuit de wildcard DNS pentru testare deoarece Google nu acceptă DNS-ul de la AWS)
+     *  **DELETE /users/:id** -> șterge contul unui utilizator
+  
+  *  **GROUPS:**
   - **POST /groups** -> adaugă un grup
   - **POST /groups/:groupId/:user_id** -> adaugă un utilizator la un grup
   - **GET /group/:groupId** -> selectează toți utilizatorii dintr-un grup
@@ -25,7 +25,7 @@
   - **GET /users/notes/:groupId** -> listează toate notițele unui grup
   - **DELETE /groups/:groupId** -> șterge un grup
  
- **NOTES:**
+  **NOTES:**
   - **POST /notes/:userId** -> adaugă o notiță la un utilizator
   - **GET /notes/users/:userId** -> listează toate notițele pentru un utilizator
   - **GET /note/:id** -> listează o notiță
