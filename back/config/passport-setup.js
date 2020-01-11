@@ -20,7 +20,8 @@ passport.use(
     {
       clientID: googleCredentials.clientID,
       clientSecret: googleCredentials.clientSecret,
-      callbackURL: "/auth/google/callback"
+      callbackURL: "/auth/google/callback",
+      scope: ["profile", "email"]
     },
     //functie callback pentru autentificarea cu google
     //este apelata atunci cand google primeste cheia de la ruta de callback

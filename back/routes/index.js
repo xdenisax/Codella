@@ -15,10 +15,10 @@ router.use("/", keywordsRouter);
 router.use("/", groupsRouter);
 router.use("/", userRouter);
 // Logout route
-router.get("/logout", (req, res) => {
+/*router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
-});
+});*/
 //dashboard for user
 router.get("/dashboard", isUserAuthenticated, (req, res) => {
   res.send("Logged in, Dashboard for " + req.user.firstname);

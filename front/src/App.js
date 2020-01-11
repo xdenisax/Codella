@@ -12,8 +12,37 @@ import Groups from "./components/groups/Groups";
 import GroupsList from "./components/groups/GroupsList";
 import Login from "./components/login/Login";
 import { Row, Col } from "reactstrap";
+import axios from "axios";
 
 class App extends Component {
+  state = {
+    user: {},
+    error: null,
+    authenticated: false
+  };
+  componentDidMount() {
+    fetch("http://localhost:5000/auth/login/success", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      }
+    })
+      .then(responseJson => {
+        this.setState({
+          authenticated: true,
+          user: responseJson.user
+        });
+      })
+      .catch(error => {
+        this.setState({
+          authenticated: false,
+          error: "Failed to authenticate user"
+        });
+      });
+  }
   render() {
     return (
       <div>
@@ -24,6 +53,12 @@ class App extends Component {
               path="/"
               Layout={MainLayout}
               Component={Login}
+            ></CustomRoute>
+            <CustomRoute
+              exact
+              path="/dashboard"
+              Layout={DashboardLayout}
+              Component={Notes}
             ></CustomRoute>
             <CustomRoute
               path="/notite"

@@ -2,6 +2,8 @@ import React from "react";
 import SideNav from "../sidenav/SideNav";
 import { Col, Row } from "reactstrap";
 import "./DashboardLayout.css";
+import axios from "axios";
+
 class DashboardLayout extends React.Component {
   render() {
     return (

@@ -3,11 +3,13 @@
 //este delete
 const User = require("../models/models").User;
 const router = require("express").Router();
-const { deleteUser, createUser } = require("../controllers/users");
+const { deleteUser, createUser, getUser } = require("../controllers/users");
 
 //creare utilizator
 router.post("/users", createUser);
 //stergere utilizator
 router.delete("/users/:id", deleteUser);
+//preluare utilizator
+router.get("/users/:id", getUser);
 
 module.exports = router;
