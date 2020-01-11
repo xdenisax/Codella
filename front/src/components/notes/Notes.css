@@ -4,3 +4,9 @@
 .fullheight {
   height: 100vh;
 }
+
+.NotesDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

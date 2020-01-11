@@ -25,6 +25,7 @@ class App extends Component {
               Layout={MainLayout}
               Component={Login}
             ></CustomRoute>
+            
             <CustomRoute
               path="/notite"
               Layout={DashboardLayout}
@@ -39,6 +40,7 @@ class App extends Component {
                 </div>
               )}
             ></CustomRoute>
+            
             <CustomRoute
               path="/grupuri"
               Layout={DashboardLayout}
