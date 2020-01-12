@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./assets/css/blk-design-system-react.css";
 import "./assets/css/nucleo-icons.css";
 import CustomRoute from "./components/custom-route/CustomRoute";
@@ -13,6 +13,7 @@ import GroupsList from "./components/groups/GroupsList";
 import Login from "./components/login/Login";
 import { Row, Col } from "reactstrap";
 import axios from "axios";
+import SideNav from "./components/sidenav/SideNav";
 
 class App extends Component {
   state = {
@@ -21,20 +22,16 @@ class App extends Component {
     authenticated: false
   };
   componentDidMount() {
-    fetch("http://localhost:5000/auth/login/success", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
+    axios
+      .get("http://localhost:5000/auth/login/success", {
+        withCredentials: true
+      })
       .then(responseJson => {
         this.setState({
           authenticated: true,
-          user: responseJson.user
+          user: responseJson.data.user
         });
+        console.log(this.state.user);
       })
       .catch(error => {
         this.setState({
@@ -55,24 +52,9 @@ class App extends Component {
               Component={Login}
             ></CustomRoute>
             <CustomRoute
-              exact
-              path="/dashboard"
-              Layout={DashboardLayout}
-              Component={Notes}
-            ></CustomRoute>
-            <CustomRoute
               path="/notite"
               Layout={DashboardLayout}
-              Component={() => (
-                <div>
-                  <Row>
-                    <Col md="3">
-                      <NotesList />
-                    </Col>
-                    <Notes />
-                  </Row>
-                </div>
-              )}
+              Component={() => <Notes></Notes>}
             ></CustomRoute>
             <CustomRoute
               path="/grupuri"
@@ -88,6 +70,18 @@ class App extends Component {
                 </div>
               )}
             ></CustomRoute>
+          </Switch>
+        </Router>
+        <Router>
+          <Switch>
+            <Route
+              path="/dashboard"
+              component={() => (
+                <Col md="2">
+                  <SideNav user={this.state.user} />
+                </Col>
+              )}
+            />
           </Switch>
         </Router>
       </div>

@@ -3,6 +3,7 @@ import logo from "../../assets/images/logo.png";
 import { NavItem, NavLink, Nav } from "reactstrap";
 import "./SideNav.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -12,6 +13,9 @@ class SideNav extends React.Component {
       username: "person"
     };
   }
+  logoutUser = () => {
+    window.open("http://localhost:5000/auth/logout", "_self");
+  };
   render() {
     return (
       <div className="fullheight">
@@ -36,7 +40,7 @@ class SideNav extends React.Component {
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink>Deconectare</NavLink>
+            <NavLink onClick={this.logoutUser}>Deconectare</NavLink>
           </NavItem>
           <NavItem>
             <NavLink>Ștergere cont</NavLink>
