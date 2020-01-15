@@ -1,23 +1,24 @@
 import React from "react";
 import { Nav, NavItem } from "reactstrap";
 import SearchBox from "../searchBox/SearchBox";
-import NotesList from "./NotesList";
-import Notes from "./Notes";
+import GroupsList from "./GroupsList";
+import Group from "./Groups";
 
-class NavigationNotes extends React.Component {
+class NavigationGroups extends React.Component {
   constructor() {
     super();
     this.state = {
-      notes: [],
+      groups: [],
       searchfield: ""
     };
   }
 
   componentDidMount() {
+    console.log("ASASDads")
       var a =[];
     for (let i = 0; i < 5; i++)
-     a.push(<Notes title={i + "Andrei"} date={i} />);
-     this.setState({notes:a});
+     a.push(<Group title={"Group "+ i} />);
+     this.setState({groups:a});
   };
 
   onSearchChange = event => {
@@ -29,12 +30,12 @@ class NavigationNotes extends React.Component {
 
   render() {
 
-    const filter = this.state.notes.filter(note=>{
+    const filter = this.state.groups.filter(group=>{
         
-        return note.props.title.toLowerCase().includes(this.state.searchfield.toLowerCase());
+        return group.props.title.toLowerCase().includes(this.state.searchfield.toLowerCase());
     });
-    console.log("state", this.state.notes);
-    if(this.state.notes.length === 0){
+    
+    if(this.state.groups.length === 0){
         return <h1>Page is Loading</h1>
     }else{
     return (
@@ -45,7 +46,7 @@ class NavigationNotes extends React.Component {
             <SearchBox onChange={this.onSearchChange} />
           </NavItem>
           <NavItem>
-            <NotesList notes={ filter } />
+            <GroupsList groups = { filter } />
           </NavItem>
         </Nav>
       </div>
@@ -54,4 +55,4 @@ class NavigationNotes extends React.Component {
 }
 }
 
-export default NavigationNotes;
+export default NavigationGroups;
