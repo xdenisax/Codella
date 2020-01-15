@@ -8,6 +8,8 @@ import { Row, Col } from "reactstrap";
 import SideNav from "./components/sidenav/SideNav";
 import axios from "axios";
 import NavigationNotes from "./components/notes/NavigationNotes";
+import NavigationGroups from "./components/groups/NavigationGroups";
+import Groups from "./components/groups/Groups";
 
 class App extends Component {
   state = {
@@ -58,6 +60,24 @@ class App extends Component {
                   </Col>
                   <Col md="3">
                     <NavigationNotes user={this.state.user} />
+                  </Col>
+                </Row>
+              )}
+            />
+          </Switch>
+          <Switch>
+            <Route
+              path="/grupuri"
+              component={() => (
+                <Row>
+                  <Col md="2">
+                    <SideNav user={this.state.user} />
+                  </Col>
+                  <Col md="2">
+                    <NavigationGroups user={this.state.user} />
+                  </Col>
+                  <Col>
+                    <Groups />
                   </Col>
                 </Row>
               )}
