@@ -1,5 +1,18 @@
 const User = require("../models/models").User;
 
+//GET /notes/:id -> afisare o notita
+const getUser = async (req, res) => {
+  const user_id = req.params.id;
+  try {
+    const user = await User.findOne({ where: { id: user_id } });
+    res.status(200).send(user);
+  } catch (e) {
+    res
+      .status(400)
+      .send({ message: "Bad request: server unable to process the request" });
+  }
+};
+
 //stergerea unui utilizator
 const deleteUser = async (req, res) => {
   const user_id = req.params.id;
@@ -39,4 +52,4 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { deleteUser, createUser };
+module.exports = { deleteUser, createUser, getUser };

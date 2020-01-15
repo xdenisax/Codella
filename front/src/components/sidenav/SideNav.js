@@ -12,6 +12,14 @@ class SideNav extends React.Component {
       username: "person"
     };
   }
+  componentDidMount() {
+    this.setState({
+      username: this.props.user.firstname
+    });
+  }
+  logoutUser = () => {
+    window.open("http://localhost:5000/auth/logout", "_self");
+  };
   render() {
     return (
       <div className="fullheight">
@@ -36,7 +44,7 @@ class SideNav extends React.Component {
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink>Deconectare</NavLink>
+            <NavLink onClick={this.logoutUser}>Deconectare</NavLink>
           </NavItem>
           <NavItem>
             <NavLink>Ștergere cont</NavLink>

@@ -4,7 +4,7 @@ import logo from "../../assets/images/logo.png";
 
 class Login extends React.Component {
   loginUser = () => {
-    console.log("Buton apasat");
+    window.open("http://localhost:5000/auth/google", "_self");
   };
   render() {
     return (
@@ -14,7 +14,9 @@ class Login extends React.Component {
             <Col className="col-sm-12 col-md-5 offset-md-3">
               <img className="display-3" src={logo} alt="codella-logo" />
               <div className="btn-wrapper">
-                <Button color="success">Accesați cu Gmail!</Button>
+                <Button color="success" onClick={this.loginUser}>
+                  Accesați cu Gmail!
+                </Button>
               </div>
             </Col>
           </Row>
