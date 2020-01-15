@@ -30,8 +30,8 @@
      * **GET /group/:groupId** -> selectează toți utilizatorii dintr-un grup
      * **GET /groups/:user_id** -> selectează toate grupurile unui utilizator
      * **DELETE /groups/:groupId/:user_id** -> șterge un utilizator dintr-un grup
-     * **POST /users/notes/:groupId/:noteId** – adaugă o notiță la un grup
-     * **GET /users/notes/:groupId** -> listează toate notițele unui grup
+     * **POST /groups/notes/:groupId/:noteId** – adaugă o notiță la un grup
+     * **GET /groups/notes/:groupId** -> listează toate notițele unui grup
      * **DELETE /groups/:groupId** -> șterge un grup
  
   *  **NOTES:**
