@@ -12,11 +12,15 @@ import NavigationGroups from "./components/groups/NavigationGroups";
 import Groups from "./components/groups/Groups";
 
 class App extends Component {
-  state = {
-    user: {},
-    error: null,
-    authenticated: false
-  };
+  constructor() {
+    super();
+    this.state = {
+      user: {},
+      error: null,
+      authenticated: false,
+      idGroup: -1
+    };
+  }
   componentDidMount() {
     axios
       .get("http://localhost:5000/auth/login/success", {
@@ -36,6 +40,12 @@ class App extends Component {
         });
       });
   }
+
+  onGroupClicked(id) {
+    console.log("App.js--", id);
+    this.setState({ idGroup: id });
+  }
+
   render() {
     return this.state.authenticated ? (
       <div>
@@ -74,10 +84,13 @@ class App extends Component {
                     <SideNav user={this.state.user} />
                   </Col>
                   <Col md="2">
-                    <NavigationGroups user={this.state.user} />
+                    <NavigationGroups
+                      user={this.state.user}
+                      clickGroup={this.onGroupClicked.bind(this)}
+                    />
                   </Col>
                   <Col>
-                    <Groups />
+                    <Groups grId={this.state.idGroup} />
                   </Col>
                 </Row>
               )}

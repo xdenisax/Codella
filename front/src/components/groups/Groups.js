@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import Group from "./Group";
 import GroupsList from "./GroupsList";
+import axios from "axios";
 
 class Groups extends React.Component {
   constructor(props) {
@@ -20,8 +21,8 @@ class Groups extends React.Component {
       modalDemo: false,
       groupName: "",
       memberEmail: "",
-      listitems: ["List Item 1", "List Item 2", "List Item 3"],
-      listNotes: ["abc", "abc2", "abc3"]
+      listMembers: [],
+      listNotes: []
     };
     this.toggleModalDemo = this.toggleModalDemo.bind(this);
   }
@@ -45,11 +46,30 @@ class Groups extends React.Component {
   };
 
   addGroup = () => {
-    //const group = {...this.state}
     console.log(this.state.groupName);
     console.log(this.state.memberEmail);
   };
 
+  componentDidMount() {
+    console.log("Parinte--", this.props.grId);
+    axios.get("http://localhost:5000/group/" + this.props.grId).then(res => {
+      var membriiGrup = [];
+      for (let i = 0; i < res.data.length; i++) {
+        membriiGrup.push(res.data[i]);
+      }
+      this.setState({ listMembers: membriiGrup });
+    });
+    axios
+      .get("http://localhost:5000/groups/notes/" + this.props.grId)
+      .then(res => {
+        var notiteGrup = [];
+        console.log(res.data);
+        for (let i = 0; i < res.data.length; i++) {
+          notiteGrup.push(res.data[i]);
+        }
+        this.setState({ listNotes: notiteGrup });
+      });
+  }
   //lists = {
   //    listitems: ["List Item 1", "List Item 2", "List Item 3"],
   //    listNotes: ["abc", "abc2", "abc3"]
@@ -106,13 +126,13 @@ class Groups extends React.Component {
           </ModalFooter>
         </Modal>
 
-        <div>Grupul meu</div>
+        <div>Membrii grup</div>
         <Row>
           <Col>
             <Card className="list-group">
-              {this.state.listitems.map(listitem => (
+              {this.state.listMembers.map(listitem => (
                 <CardText className="">
-                  {listitem}
+                  {listitem.firstname}
                   <Button>Button</Button>
                 </CardText>
               ))}
@@ -122,7 +142,7 @@ class Groups extends React.Component {
           <Col>
             <Card className="list-group">
               {this.state.listNotes.map(listNote => (
-                <CardText className="">{listNote}</CardText>
+                <CardText className="">{listNote.title}</CardText>
               ))}
             </Card>
           </Col>

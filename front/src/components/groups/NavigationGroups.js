@@ -3,7 +3,6 @@ import { Nav, NavItem, Col, Row } from "reactstrap";
 import SearchBox from "../searchBox/SearchBox";
 import GroupsList from "./GroupsList";
 import Group from "./Group";
-import Groups from "./Groups";
 import axios from "axios";
 
 class NavigationGroups extends React.Component {
@@ -11,9 +10,15 @@ class NavigationGroups extends React.Component {
     super();
     this.state = {
       groups: [],
-      searchfield: ""
+      searchfield: "",
+      selectedId: -1
     };
   }
+
+  getSelectedGroup = id => {
+    // se trimite id-ul catre componenta Groups (prin parinte)
+    this.props.clickGroup(id);
+  };
 
   componentDidMount() {
     var a = [];
@@ -23,9 +28,13 @@ class NavigationGroups extends React.Component {
         for (let i = 0; i < res.data.length; i++) {
           a.push(<Group name={res.data[i].name} id={res.data[i].id} />);
         }
-        console.log(res.data[0].name);
+        console.log(res.data[0]);
         this.setState({ groups: a });
       });
+  }
+
+  onClickedGroup() {
+    this.props.clickGroup(this.state.selectedId);
   }
 
   onSearchChange = event => {
@@ -50,7 +59,10 @@ class NavigationGroups extends React.Component {
                 <SearchBox onChange={this.onSearchChange} />
               </NavItem>
               <NavItem>
-                <GroupsList groups={filter} />
+                <GroupsList
+                  groups={filter}
+                  f={this.getSelectedGroup.bind(this)}
+                />
               </NavItem>
             </Nav>
           </Row>
