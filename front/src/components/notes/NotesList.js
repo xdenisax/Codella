@@ -1,12 +1,12 @@
 import React from "react";
-import Notes from "./Notes";
+import Note from "./Note";
 
 
 const NotesList =({notes})=>{
 
   
   const NoteComponent = notes.map((user, i)=>{
-      return <Notes key = {i} title = {notes[i].props.title} date= {notes[i].props.date} />
+      return <Note key = {i} title = {notes[i].props.title} date= {notes[i].props.date} />
     });
    
 

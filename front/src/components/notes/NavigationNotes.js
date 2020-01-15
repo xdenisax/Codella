@@ -2,7 +2,7 @@ import React from "react";
 import { Nav, NavItem } from "reactstrap";
 import SearchBox from "../searchBox/SearchBox";
 import NotesList from "./NotesList";
-import Notes from "./Notes";
+import Note from "./Note";
 
 class NavigationNotes extends React.Component {
   constructor() {
@@ -16,7 +16,7 @@ class NavigationNotes extends React.Component {
   componentDidMount() {
       var a =[];
     for (let i = 0; i < 5; i++)
-     a.push(<Notes title={i + "Andrei"} date={i} />);
+     a.push(<Note title={i + "Andrei"} date={i} />);
      this.setState({notes:a});
   };
 
@@ -24,7 +24,7 @@ class NavigationNotes extends React.Component {
     this.setState({ searchfield: event.target.value });
   };
 
-
+  
   
 
   render() {
