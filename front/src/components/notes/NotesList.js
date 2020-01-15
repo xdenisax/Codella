@@ -1,9 +1,19 @@
 import React from "react";
+import Note from "./Note";
 
-class NotesList extends React.Component {
-  render() {
-    return <div>Notes List</div>;
-  }
-}
+const NotesList = ({ notes, f }) => {
+  const NoteComponent = notes.map((note, i) => {
+    return (
+      <Note
+        key={i}
+        title={notes[i].props.title}
+        date={notes[i].props.date}
+        click={f}
+      />
+    );
+  });
+
+  return <div>{NoteComponent}</div>;
+};
 
 export default NotesList;

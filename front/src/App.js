@@ -3,16 +3,11 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./assets/css/blk-design-system-react.css";
 import "./assets/css/nucleo-icons.css";
-import CustomRoute from "./components/custom-route/CustomRoute";
-import DashboardLayout from "./components/layouts/DashboardLayout";
-import MainLayout from "./components/layouts/MainLayout";
-import Notes from "./components/notes/Notes";
-import Groups from "./components/groups/Groups";
-import GroupsList from "./components/groups/GroupsList";
 import Login from "./components/login/Login";
 import { Row, Col } from "reactstrap";
 import SideNav from "./components/sidenav/SideNav";
 import axios from "axios";
+import NavigationNotes from "./components/notes/NavigationNotes";
 
 class App extends Component {
   state = {
@@ -31,7 +26,6 @@ class App extends Component {
           authenticated: true,
           user: responseJson.data.user
         });
-        console.log(this.state.user);
       })
       .catch(error => {
         this.setState({
@@ -41,37 +35,8 @@ class App extends Component {
       });
   }
   render() {
-    return (
+    return this.state.authenticated ? (
       <div>
-        <Router>
-          <Switch>
-            <CustomRoute
-              exact
-              path="/"
-              Layout={MainLayout}
-              Component={Login}
-            ></CustomRoute>
-            <CustomRoute
-              path="/notite"
-              Layout={DashboardLayout}
-              Component={() => <Notes></Notes>}
-            ></CustomRoute>
-            <CustomRoute
-              path="/dashbo"
-              Layout={DashboardLayout}
-              Component={() => (
-                <div>
-                  <Row>
-                    <Col md="3">
-                      <GroupsList />
-                    </Col>
-                    <Groups />
-                  </Row>
-                </div>
-              )}
-            ></CustomRoute>
-          </Switch>
-        </Router>
         <Router>
           <Switch>
             <Route
@@ -83,8 +48,31 @@ class App extends Component {
               )}
             />
           </Switch>
+          <Switch>
+            <Route
+              path="/notite"
+              component={() => (
+                <Row>
+                  <Col md="2">
+                    <SideNav user={this.state.user} />
+                  </Col>
+                  <Col md="3">
+                    <NavigationNotes user={this.state.user} />
+                  </Col>
+                </Row>
+              )}
+            />
+          </Switch>
         </Router>
       </div>
+    ) : (
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Login></Login>
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
