@@ -12,6 +12,7 @@ import Groups from "./components/groups/Groups";
 import GroupsList from "./components/groups/GroupsList";
 import Login from "./components/login/Login";
 import { Row, Col } from "reactstrap";
+import NavigationNotes from "./components/notes/NavigationNotes";
 
 class App extends Component {
   render() {
@@ -32,7 +33,7 @@ class App extends Component {
                 <div>
                   <Row>
                     <Col md="3">
-                      <NotesList />
+                      <NavigationNotes />
                     </Col>
                     <Notes />
                   </Row>
