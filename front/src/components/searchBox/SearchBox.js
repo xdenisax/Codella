@@ -9,7 +9,7 @@ const SearchBox =({onChange})=>
              <Input
                placeholder="Search" type="text" 
                 onChange = {onChange}/>
-            />
+             <br></br>
              
         </div>
     );

@@ -7,9 +7,7 @@ import CustomRoute from "./components/custom-route/CustomRoute";
 import DashboardLayout from "./components/layouts/DashboardLayout";
 import MainLayout from "./components/layouts/MainLayout";
 import Notes from "./components/notes/Notes";
-import NotesList from "./components/notes/NotesList";
 import Groups from "./components/groups/Groups";
-import GroupsList from "./components/groups/GroupsList";
 import Login from "./components/login/Login";
 import { Row, Col } from "reactstrap";
 import NavigationNotes from "./components/notes/NavigationNotes";
@@ -33,7 +31,7 @@ class App extends Component {
               Component={() => (
                 <div>
                   <Row>
-                    <Col md="3">
+                    <Col md="2">
                       <NavigationNotes />
                     </Col>
                     <Notes />
