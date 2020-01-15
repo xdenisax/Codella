@@ -22,8 +22,11 @@ class NavigationNotes extends React.Component {
     this.setState({ searchfield: event.target.value });
   };
 
-  getSelectedNote = event => {
-    console.log(event);
+  getSelectedNote = id => {
+    //preluare notita dupa id
+    axios
+      .get("http://localhost:5000/notes/" + id)
+      .then(res => console.log(res.data));
   };
 
   refreshList = () => {
@@ -50,7 +53,6 @@ class NavigationNotes extends React.Component {
         .toLowerCase()
         .includes(this.state.searchfield.toLowerCase());
     });
-    console.log("state", this.state.notes);
     if (this.state.notes.length === 0) {
       return <h1>Page is Loading</h1>;
     } else {

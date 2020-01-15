@@ -8,7 +8,8 @@ const NotesList = ({ notes, f }) => {
         key={i}
         title={notes[i].props.title}
         date={notes[i].props.date}
-        click={f}
+        id={notes[i].props.id}
+        click={() => f(notes[i].props.id)}
       />
     );
   });
