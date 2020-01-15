@@ -5,8 +5,18 @@
   height: 100vh;
 }
 
-.NotesDetails {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
+/*.NotesDetails {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  justify-content: flex-end;*/
+/*}*/
+
+/*Row{*/
+/*  display: grid;*/
+  /*flex-direction: row;*/
+/*  justify-content: flex-end;*/
+/*}*/
+/*.NotesComponent{*/
+/*  display: grid;*/
+/*  justify-items: end;*/
+/*}*/
