@@ -18,6 +18,7 @@ const indexRouter = require("./routes/index");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const authCheck = require("./controllers/middlewares").isUserAuthenticated;
 app.use(bodyParser.json());
 
 //encrypt the cookie and make it a day long
@@ -31,27 +32,24 @@ app.use(
 
 app.use(cookieParser());
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 //initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 //set up routes
 app.use("/", indexRouter);
 
-const authCheck = (req, res, next) => {
-  if (!req.user) {
-    res.status(401).json({
-      authenticated: false,
-      message: "user has not been authenticated"
-    });
-  } else {
-    next();
-  }
-};
-
-// if it's already login, send the profile response,
-// otherwise, send a 401 response that the user is not authenticated
-// authCheck before navigating to home page
-app.get("/", authCheck, (req, res) => {
+//verificare daca utilizatorul e logat
+app.get("/dashboard", authCheck, (req, res) => {
   res.status(200).json({
     authenticated: true,
     message: "user successfully authenticated",
@@ -62,7 +60,7 @@ app.get("/", authCheck, (req, res) => {
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000/",
     credentials: true
   })
 );

@@ -1,35 +1,36 @@
 const router = require("express").Router();
 const passport = require("passport");
-const CLIENT_HOME_PAGE_URL = "http://localhost:3000/dashboard";
+const Dashboard_URL = "http://localhost:3000/dashboard";
+const Homepage_URL = "http://localhost:3000/";
 const cors = require("cors");
-// when login is successful, retrieve user info
+// cand userul se logheaza cu succes, se preiau datele despre el
 router.get("/login/success", (req, res) => {
   if (req.user) {
     res.json({
       success: true,
-      message: "user has successfully authenticated",
+      message: "user authenticated",
       user: req.user,
       cookies: req.cookies
     });
   } else {
     res.status(401).json({
-      message: "failed auth"
+      message: "auth failed"
     });
   }
 });
 
-// when login failed, send failed msg
+// cand loginul nu reuseste se trimite mesaj
 router.get("/login/failed", (req, res) => {
   res.status(401).json({
     success: false,
-    message: "user failed to authenticate."
+    message: "auth failed"
   });
 });
 
-// When logout, redirect to client
+// la logout, redirect la homepage
 router.get("/logout", (req, res) => {
   req.logout();
-  res.redirect(CLIENT_HOME_PAGE_URL);
+  res.redirect(Homepage_URL);
 });
 
 //autentificare cu google
@@ -39,7 +40,7 @@ router.get("/google", passport.authenticate("google"));
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: CLIENT_HOME_PAGE_URL,
+    successRedirect: Dashboard_URL,
     failureRedirect: "auth/login/failed"
   })
 );

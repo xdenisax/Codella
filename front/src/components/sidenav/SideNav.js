@@ -3,7 +3,6 @@ import logo from "../../assets/images/logo.png";
 import { NavItem, NavLink, Nav } from "reactstrap";
 import "./SideNav.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 class SideNav extends React.Component {
   constructor(props) {
@@ -12,6 +11,11 @@ class SideNav extends React.Component {
       vertical: 1,
       username: "person"
     };
+  }
+  componentDidMount() {
+    this.setState({
+      username: this.props.user.firstname
+    });
   }
   logoutUser = () => {
     window.open("http://localhost:5000/auth/logout", "_self");

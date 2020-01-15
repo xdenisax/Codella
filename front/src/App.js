@@ -7,13 +7,12 @@ import CustomRoute from "./components/custom-route/CustomRoute";
 import DashboardLayout from "./components/layouts/DashboardLayout";
 import MainLayout from "./components/layouts/MainLayout";
 import Notes from "./components/notes/Notes";
-import NotesList from "./components/notes/NotesList";
 import Groups from "./components/groups/Groups";
 import GroupsList from "./components/groups/GroupsList";
 import Login from "./components/login/Login";
 import { Row, Col } from "reactstrap";
-import axios from "axios";
 import SideNav from "./components/sidenav/SideNav";
+import axios from "axios";
 
 class App extends Component {
   state = {
@@ -24,7 +23,8 @@ class App extends Component {
   componentDidMount() {
     axios
       .get("http://localhost:5000/auth/login/success", {
-        withCredentials: true
+        withCredentials: true,
+        crossdomain: true
       })
       .then(responseJson => {
         this.setState({
@@ -57,7 +57,7 @@ class App extends Component {
               Component={() => <Notes></Notes>}
             ></CustomRoute>
             <CustomRoute
-              path="/grupuri"
+              path="/dashbo"
               Layout={DashboardLayout}
               Component={() => (
                 <div>
