@@ -10,9 +10,10 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import Group from "./Group";
-import GroupsList from "./GroupsList";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 class Groups extends React.Component {
   constructor(props) {
@@ -20,9 +21,11 @@ class Groups extends React.Component {
     this.state = {
       modalDemo: false,
       groupName: "",
-      memberEmail: "",
+      memberEmailInput: "",
+      memberEmails: [],
       listMembers: [],
-      listNotes: []
+      listNotes: [],
+      idGrupCreat: -1
     };
     this.toggleModalDemo = this.toggleModalDemo.bind(this);
   }
@@ -41,24 +44,51 @@ class Groups extends React.Component {
 
   handleChangeMemberEmail = event => {
     this.setState({
-      memberEmail: event.target.value
+      memberEmailInput: event.target.value
     });
+    this.setState({ memberEmails: this.state.memberEmailInput.split(",") });
   };
 
   addGroup = () => {
-    console.log(this.state.groupName);
-    console.log(this.state.memberEmail);
+    const idUseri = [];
+    var numeGrup = this.state.groupName;
+    for (let i = 0; i < this.state.memberEmails.length; i++) {
+      axios
+        .get("http://localhost:5000/users/email/" + this.state.memberEmails[i])
+        .then(res => idUseri.push(res.data.id))
+        .catch(err => console.log(err));
+    }
+    console.log(numeGrup);
+    axios
+      .post("http://localhost:5000/groups", { name: numeGrup })
+      .then(res => res.data)
+      .then(data => {
+        for (let i = 0; i < idUseri.length; i++) {
+          axios
+            .post(
+              "http://localhost:5000/groups/" + data.group.id + "/" + idUseri[i]
+            )
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+    this.toggleModalDemo();
+    toast("Grup adăugat!");
   };
 
   componentDidMount() {
     console.log("Parinte--", this.props.grId);
-    axios.get("http://localhost:5000/group/" + this.props.grId).then(res => {
-      var membriiGrup = [];
-      for (let i = 0; i < res.data.length; i++) {
-        membriiGrup.push(res.data[i]);
-      }
-      this.setState({ listMembers: membriiGrup });
-    });
+    axios
+      .get("http://localhost:5000/group/" + this.props.grId)
+      .then(res => {
+        var membriiGrup = [];
+        for (let i = 0; i < res.data.length; i++) {
+          membriiGrup.push(res.data[i]);
+        }
+        this.setState({ listMembers: membriiGrup });
+      })
+      .catch(err => console.log("404 - did not found group members"));
     axios
       .get("http://localhost:5000/groups/notes/" + this.props.grId)
       .then(res => {
@@ -68,7 +98,8 @@ class Groups extends React.Component {
           notiteGrup.push(res.data[i]);
         }
         this.setState({ listNotes: notiteGrup });
-      });
+      })
+      .catch(err => console.log("404 - did not found notes for group"));
   }
   //lists = {
   //    listitems: ["List Item 1", "List Item 2", "List Item 3"],
@@ -132,7 +163,7 @@ class Groups extends React.Component {
             <Card className="list-group">
               {this.state.listMembers.map(listitem => (
                 <CardText className="">
-                  {listitem.firstname}
+                  {listitem.firstname + " " + listitem.familyname}
                   <Button>Button</Button>
                 </CardText>
               ))}

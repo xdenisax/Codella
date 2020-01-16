@@ -18,7 +18,8 @@ const createGroup = async (req, res) => {
   if (group.name) {
     await group.save();
     res.status(201).send({
-      message: "Group created!"
+      message: "Group created!",
+      group: group
     });
   } else {
     res.status(400).send({

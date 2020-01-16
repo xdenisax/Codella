@@ -1,10 +1,23 @@
 const User = require("../models/models").User;
 
-//GET /notes/:id -> afisare o notita
+//GET user by id
 const getUser = async (req, res) => {
   const user_id = req.params.id;
   try {
     const user = await User.findOne({ where: { id: user_id } });
+    res.status(200).send(user);
+  } catch (e) {
+    res
+      .status(400)
+      .send({ message: "Bad request: server unable to process the request" });
+  }
+};
+
+//get an id of an user by its email
+const getUserIdByEmail = async (req, res) => {
+  const user_email = req.params.email;
+  try {
+    const user = await User.findOne({ where: { email: user_email } });
     res.status(200).send(user);
   } catch (e) {
     res
@@ -52,4 +65,4 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { deleteUser, createUser, getUser };
+module.exports = { deleteUser, createUser, getUser, getUserIdByEmail };

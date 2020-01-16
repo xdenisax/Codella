@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, NavItem, Col, Row } from "reactstrap";
+import { Nav, NavItem, Row } from "reactstrap";
 import SearchBox from "../searchBox/SearchBox";
 import GroupsList from "./GroupsList";
 import Group from "./Group";

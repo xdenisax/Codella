@@ -3,7 +3,12 @@
 //este delete
 const User = require("../models/models").User;
 const router = require("express").Router();
-const { deleteUser, createUser, getUser } = require("../controllers/users");
+const {
+  deleteUser,
+  createUser,
+  getUser,
+  getUserIdByEmail
+} = require("../controllers/users");
 
 //creare utilizator
 router.post("/users", createUser);
@@ -11,5 +16,7 @@ router.post("/users", createUser);
 router.delete("/users/:id", deleteUser);
 //preluare utilizator
 router.get("/users/:id", getUser);
+//get an id of an user by its email
+router.get("/users/email/:email", getUserIdByEmail);
 
 module.exports = router;
