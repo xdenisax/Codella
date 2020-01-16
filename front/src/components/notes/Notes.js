@@ -299,7 +299,7 @@ class Notes extends React.Component {
               name="exampleRadios1"
               id="exampleRadios11"
               value="Curs"
-              checked={this.state.tagInput == "Curs" ? true : null}
+              checked={this.state.tagInput === "Curs" ? true : null}
               onChange={this.onChangeTagInput}
             />
             Curs
@@ -313,7 +313,7 @@ class Notes extends React.Component {
               name="exampleRadios1"
               id="exampleRadios12"
               value="Seminar"
-              checked={this.state.tagInput == "Seminar" ? true : null}
+              checked={this.state.tagInput === "Seminar" ? true : null}
               onChange={this.onChangeTagInput}
             />
             Seminar

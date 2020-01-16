@@ -87,23 +87,11 @@ const deleteNote = async (req, res) => {
 //POST /notes/:userId -> adauga o notita*/
 
 const saveNote = async (req, res) => {
-  try {
-    const user_id = req.params.userId;
-    User.findOne({ where: { id: req.params.userId } }).then(result => {
-      if (result) {
-        const note = new Note(req.body);
-        note.userId = user_id;
-        note.save();
-        res.status(200).send("Note created");
-      } else {
-        res.status(404).send({ message: "Not found." });
-      }
-    });
-  } catch (e) {
-    res
-      .status(400)
-      .send({ message: "Bad request: server unable to process the request" });
-  }
+  const user_id = req.params.userId;
+  const note = new Note(req.body);
+  note.userId = user_id;
+  await note.save();
+  res.status(200).send({ id: note.id });
 };
 
 module.exports = {
