@@ -4,3 +4,24 @@
 .fullheight {
   height: 100vh;
 }
+.custom-html-style p {
+  color: #333 !important;
+}
+
+.custom-html-style ol li,
+.custom-html-style ul li {
+  color: #333 !important;
+}
+
+.list-item h1,
+.list-item h2,
+.list-item h3,
+.list-item h4,
+.list-item h5,
+.list-item h6 {
+  color: #333 !important;
+}
+
+.custom-html-style code {
+  color: #333 !important;
+}

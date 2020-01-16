@@ -10,6 +10,7 @@ import axios from "axios";
 import NavigationNotes from "./components/notes/NavigationNotes";
 import NavigationGroups from "./components/groups/NavigationGroups";
 import Groups from "./components/groups/Groups";
+import Notes from "./components/notes/Notes";
 
 class App extends Component {
   constructor() {
@@ -70,6 +71,9 @@ class App extends Component {
                   </Col>
                   <Col md="3">
                     <NavigationNotes user={this.state.user} />
+                  </Col>
+                  <Col>
+                    <Notes></Notes>
                   </Col>
                 </Row>
               )}
