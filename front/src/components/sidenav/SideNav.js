@@ -22,7 +22,7 @@ class SideNav extends React.Component {
   };
   render() {
     return (
-      <div className="fullheight">
+      <div>
         <Nav className="nav-pills-success flex-column" pills>
           <NavItem>
             <img src={logo} alt={"logo Codella"} />
@@ -45,9 +45,6 @@ class SideNav extends React.Component {
           </NavItem>
           <NavItem>
             <NavLink onClick={this.logoutUser}>Deconectare</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink>Ștergere cont</NavLink>
           </NavItem>
         </Nav>
       </div>

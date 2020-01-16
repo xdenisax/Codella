@@ -11,6 +11,9 @@ import NavigationNotes from "./components/notes/NavigationNotes";
 import NavigationGroups from "./components/groups/NavigationGroups";
 import Groups from "./components/groups/Groups";
 import Notes from "./components/notes/Notes";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 class App extends Component {
   constructor() {
@@ -19,7 +22,8 @@ class App extends Component {
       user: {},
       error: null,
       authenticated: false,
-      idGroup: -1
+      idGroup: -1,
+      idNote: -1
     };
   }
   componentDidMount() {
@@ -46,7 +50,10 @@ class App extends Component {
     console.log("App.js--", id);
     this.setState({ idGroup: id });
   }
-
+  onNoteClicked(id) {
+    console.log("App --", id);
+    this.setState({ idNote: id });
+  }
   render() {
     return this.state.authenticated ? (
       <div>
@@ -70,10 +77,16 @@ class App extends Component {
                     <SideNav user={this.state.user} />
                   </Col>
                   <Col md="3">
-                    <NavigationNotes user={this.state.user} />
+                    <NavigationNotes
+                      user={this.state.user}
+                      clickNote={this.onNoteClicked.bind(this)}
+                    />
                   </Col>
                   <Col>
-                    <Notes></Notes>
+                    <Notes
+                      noteId={this.state.idNote}
+                      user={this.state.user}
+                    ></Notes>
                   </Col>
                 </Row>
               )}
@@ -87,7 +100,7 @@ class App extends Component {
                   <Col md="2">
                     <SideNav user={this.state.user} />
                   </Col>
-                  <Col md="2">
+                  <Col md="3">
                     <NavigationGroups
                       user={this.state.user}
                       clickGroup={this.onGroupClicked.bind(this)}

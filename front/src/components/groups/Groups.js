@@ -13,7 +13,6 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-toast.configure();
 
 class Groups extends React.Component {
   constructor(props) {
@@ -164,7 +163,6 @@ class Groups extends React.Component {
               {this.state.listMembers.map(listitem => (
                 <CardText className="">
                   {listitem.firstname + " " + listitem.familyname}
-                  <Button>Button</Button>
                 </CardText>
               ))}
             </Card>

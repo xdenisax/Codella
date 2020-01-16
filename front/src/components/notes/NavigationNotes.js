@@ -10,7 +10,8 @@ class NavigationNotes extends React.Component {
     super();
     this.state = {
       notes: [],
-      searchfield: ""
+      searchfield: "",
+      selectedId: -1
     };
   }
 
@@ -21,9 +22,13 @@ class NavigationNotes extends React.Component {
   onSearchChange = event => {
     this.setState({ searchfield: event.target.value });
   };
+  onClickedNote() {
+    this.props.clickNote(this.state.selectedId);
+  }
 
   getSelectedNote = id => {
     //preluare notita dupa id
+    this.props.clickNote(id);
     axios
       .get("http://localhost:5000/notes/" + id)
       .then(res => console.log(res.data));
@@ -68,7 +73,7 @@ class NavigationNotes extends React.Component {
               </Row>
             </NavItem>
             <NavItem id="">
-              <NotesList notes={filter} f={this.getSelectedNote} />
+              <NotesList notes={filter} f={this.getSelectedNote.bind(this)} />
             </NavItem>
           </Nav>
         </div>

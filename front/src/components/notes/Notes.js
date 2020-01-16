@@ -5,15 +5,16 @@ import {
   Input,
   Label,
   FormGroup,
-  Card,
-  CardBody,
   Row,
-  Col
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
-import { Link } from "react-router-dom";
 import MdEditor from "react-markdown-editor-lite";
 import MarkdownIt from "markdown-it";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 class Notes extends React.Component {
   mdParser = null;
@@ -21,27 +22,63 @@ class Notes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      modalDemo: false,
       id: -1,
       keywordInput: "",
       keywords: [],
       titleInput: "",
       subjectInput: "",
       tagInput: "Seminar",
-      markdownInput: ""
+      markdownInput: " ",
+      groupNames: [],
+      groupNamesInput: " ",
+      grupuri: []
     };
-
+    this.toggleModalDemo = this.toggleModalDemo.bind(this);
     this.mdParser = new MarkdownIt();
     this.note = props.note;
   }
 
-  //   note = {
-  //     id: -1,
-  //     title: "Nespecificat",
-  //     subject: "Nespecificat",
-  //     date: new Date().toLocaleTimeString(),
-  //     tag: "Seminar",
-  //     content: " "
-  // };
+  toggleModalDemo() {
+    this.setState({
+      modalDemo: !this.state.modalDemo
+    });
+  }
+
+  shareNote = () => {
+    axios
+      .post(
+        "http://localhost:5000/groups/notes/" +
+          this.state.grupIdSelectat +
+          "/" +
+          this.state.id
+      )
+      .then(res => {
+        console.log(res);
+        this.toggleModalDemo();
+        toast("Ati partajat o notita");
+      });
+  };
+
+  handleChangeGroupsShared = event => {
+    this.setState({
+      groupNamesInput: event.target.value
+    });
+    this.setState({ groupNames: this.state.groupNamesInput.split(",") });
+  };
+
+  resetNote = () => {
+    this.setState({
+      keywordInput: "",
+      keywords: [],
+      titleInput: "",
+      subjectInput: "",
+      tagInput: "Seminar",
+      markdownInput: " ",
+      grupuriUtilizator: [],
+      grupIdSelectat: -1
+    });
+  };
 
   handleEditorChange = ({ html, text }, event) => {
     this.setState({ markdownInput: text });
@@ -72,15 +109,17 @@ class Notes extends React.Component {
   };
 
   saveNote = event => {
-    if (this.state.id > 0) {
+    if (this.state.id > -1) {
       //actualizam notita in bd
-      console.log("actualizare");
-      console.log(
-        this.state.titleInput,
-        this.state.subjectInput,
-        this.state.tagInput,
-        this.state.markdownInput
-      );
+      axios
+        .put("http://localhost:5000/notes/" + this.state.id, {
+          content: this.state.markdownInput
+        })
+        .then(res => {
+          console.log(res);
+          toast("Ati actualizat o notita");
+        })
+        .catch(err => console.log(err));
     } else {
       //salvam o notita noua
       this.tokenizeKeywords();
@@ -101,71 +140,121 @@ class Notes extends React.Component {
         tag: this.state.tagInput
       };
 
-      let id;
-      event.preventDefault();
-      axios.post("http://18.224.94.55:5000/notes/2", note).then(res => {
-        console.log(res);
-        console.log(res.data);
-        id = res.id;
-      }).catch = e => {
-        console.log(e.response);
-      };
-
-      for (let i = 0; i < this.state.keywords.length; i++) {
-        axios
-          .post("http://18.224.94.55:5000/keywords/2", this.state.keywords[i])
-          .then(res => {
-            console.log(res);
-            console.log(res.data);
-            id = res.id;
-          }).catch = e => {
-          console.log(e.response);
-        };
-      }
+      axios
+        .post("http://localhost:5000/notes/" + this.props.user.id, note)
+        .then(res => res.data)
+        .then(data => {
+          this.setState({
+            id: data.id
+          });
+          toast("Ati adaugat o notita");
+          for (let i = 0; i < this.state.keywords.length; i++) {
+            axios
+              .post("http://localhost:5000/keywords/" + data.id, {
+                word: this.state.keywords[i]
+              })
+              .then(res => {
+                console.log(res);
+              })
+              .catch(err => console.log(err));
+          }
+        })
+        .catch(err => console.log(err));
     }
   };
 
+  getSelectedGroup = event => {
+    /*const selectedIndex = event.target.options.selectedIndex;
+    console.log(event.target.options[selectedIndex].getAttribute("key"));*/
+    const { options, selectedIndex } = event.target;
+    this.setState({ grupIdSelectat: options[selectedIndex].value });
+  };
+
   deleteNote = event => {
-    axios.delete("http://18.224.94.55:5000/notes/2").then(res => {
-      console.log(res);
-    });
-    this.setState({ titleInput: "" });
-    this.setState({ subjectInput: "" });
-    this.setState({ tagInput: null });
-    this.setState({ markdownInput: "" });
-    this.setState({ keywords: "" });
+    if (this.state.id > -1) {
+      axios.delete("http://localhost:5000/notes/" + this.state.id).then(res => {
+        console.log(res);
+        this.toggleModalDemo();
+        toast("Ati sters o notita");
+      });
+      this.setState({ id: -1 });
+      this.setState({ titleInput: "" });
+      this.setState({ subjectInput: "" });
+      this.setState({ tagInput: null });
+      this.setState({ markdownInput: "" });
+      this.setState({ keywords: "" });
+    }
   };
 
   //id utilizator transmis din parinte
   componentDidMount(props) {
-    // if(props.notes != null){
-    //     //creez note pe baza lui
-    //     //setez formul pe baza atributelor
-    //     let id=2;/////pun id ul notitei
-    //     axios.get("http://18.224.94.55:5000/keywords/2").then(res =>{
-    //       console.log(res.data);
-    //       this.setState({keywords: res.data}); //??????????????????????
-    //     });
-    // }
-    const note = {
-      title: "Titlu",
-      subject: "Materie",
-      date: new Date().toLocaleTimeString(),
-      tag: "Seminar",
-      content: "Continut"
-    };
-    this.setState({ titleInput: note.title });
-    this.setState({ subjectInput: note.subject });
-    this.setState({ tagInput: note.tag });
-    this.setState({ markdownInput: note.content });
-    this.setState({ keywords: ["sD", "sfdf"] });
+    var grupuriPrimite = [];
+    axios
+      .get("http://localhost:5000/groups/" + this.props.user.id)
+      .then(res => {
+        grupuriPrimite = res.data;
+        this.setState({
+          grupuriUtilizator: res.data,
+          grupuri: grupuriPrimite
+        });
+      });
+    console.log("Notes--", this.props.noteId);
+    axios.get("http://localhost:5000/notes/" + this.props.noteId).then(res => {
+      this.setState({ id: this.props.noteId });
+      this.setState({ titleInput: res.data.title });
+      this.setState({ subjectInput: res.data.subject });
+      this.setState({ tagInput: res.data.tag });
+      this.setState({ markdownInput: res.data.content });
+      this.setState({ keywords: " " });
+    });
   }
 
   render() {
     return (
       <div className="NotesComponent">
+        <Modal isOpen={this.state.modalDemo} toggle={this.toggleModalDemo}>
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">
+              Partajeaza notita
+            </h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+              onClick={this.toggleModalDemo}
+            >
+              <i className="tim-icons icon-simple-remove" />
+            </button>
+          </div>
+          <ModalBody>
+            <FormGroup>
+              <Input
+                type="select"
+                name="select"
+                id="exampleSelect"
+                onChange={this.getSelectedGroup}
+              >
+                {this.state.grupuri.map(value => (
+                  <option value={value.id}>{value.name} </option>
+                ))}
+              </Input>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDemo}>
+              Close
+            </Button>
+            <Button color="primary" onClick={this.shareNote}>
+              Save changes
+            </Button>
+          </ModalFooter>
+        </Modal>
         <Row>
-          <Button color="info" size="sm">
+          <Button color="info" size="sm" onClick={this.resetNote}>
+            Notita noua
+          </Button>
+          <Button color="warning" size="sm" onClick={this.toggleModalDemo}>
             Distribuie
           </Button>
           <Button color="success" size="sm" onClick={this.saveNote}>
@@ -177,8 +266,7 @@ class Notes extends React.Component {
             className="button"
             onClick={this.deleteNote}
           >
-            {" "}
-            Sterge{" "}
+            Sterge
           </Button>
         </Row>
 
@@ -236,12 +324,11 @@ class Notes extends React.Component {
         <Input
           placeholder="Cuvinte cheie"
           onChange={this.onChangeKeywordInput}
-          value={this.state.keywords}
         />
 
         <div>
           <MdEditor
-            renderHTML={text => this.mdParser.render(text)}
+            renderHTML={text => this.mdParser.render(text + " ")}
             onChange={this.handleEditorChange}
             value={this.state.markdownInput}
           />

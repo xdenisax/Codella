@@ -3,6 +3,7 @@
 }
 .fullheight {
   height: 100vh;
+  overflow-y: scroll;
 }
 .custom-html-style p {
   color: #333 !important;
@@ -24,4 +25,12 @@
 
 .custom-html-style code {
   color: #333 !important;
+}
+
+option {
+  color: #333;
+}
+
+#exampleSelect {
+  color: #333;
 }
