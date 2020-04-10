@@ -1,10 +1,16 @@
-# **Nume echipă:** Codella
+# **Echipă:** Codella
 # **Temă:** Aplicație web pentru gestionarea notițelor de curs/seminar
+# **Funcțiunalități:** 
+  - Autentificarea cu Google
+  - Salvarea și editarea notițelor luate la seminar sau curs cu ajutorul unui editor de tip markdown
+  - Partajarea notițelor în grupuri de studenți
+  - Sortarea și filtrarea notițelor 
+
 # **Membri:**
-  - Calotă Denisa-Andreea - Product Owner
-  - Baicu Andrei - Project Manager
-  - Cervinski Teodor - Software Developer
-  - Berdei Ioana-Andreea - Software Developer
+  - Calotă Denisa-Andreea 
+  - Baicu Andrei 
+  - Cervinski Teodor 
+  - Berdei Ioana-Andreea 
 
 # Run app
   - cd back
